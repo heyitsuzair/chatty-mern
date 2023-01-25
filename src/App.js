@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToggleTheme } from "./components/commons";
-import { RoutePaths } from "./config/routes";
-import { Login, Signup } from "./pages/auth";
+import { ToggleTheme } from "./inc/components/commons";
+import { RoutePaths } from "./inc/config/routes";
+import { Login, Signup } from "./inc/pages/auth";
 
 function App() {
   return (

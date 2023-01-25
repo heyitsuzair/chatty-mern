@@ -1,4 +1,4 @@
 export const RoutePaths = {
-  signup: "/signup",
-  login: "/login",
+  signup: "/auth/signup",
+  login: "/auth/login",
 };

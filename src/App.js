@@ -9,8 +9,8 @@ function App() {
       <ToggleTheme />
       <Router>
         <Routes>
-          <Route name="Signup" path={RoutePaths.signup} element={<Signup />} />
-          <Route name="Login" path={RoutePaths.login} element={<Login />} />
+          <Route path={RoutePaths.signup} element={<Signup />} />
+          <Route path={RoutePaths.login} element={<Login />} />
         </Routes>
       </Router>
     </div>

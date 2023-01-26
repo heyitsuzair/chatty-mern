@@ -23,6 +23,11 @@ import TextMd from "./text/Text.md";
 import TextSm from "./text/Text.sm";
 import TextError from "./text/Text.error";
 
+/**
+ * Buttons
+ */
+import PlainButton from "./buttons/PlainButton";
+
 export {
   ToggleTheme,
   InputPlain,
@@ -37,4 +42,5 @@ export {
   Text6Xl,
   Text7Xl,
   TextError,
+  PlainButton,
 };

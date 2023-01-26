@@ -1,12 +1,26 @@
 import { useFormik } from "formik";
-import React from "react";
-import { Link } from "react-router-dom";
-import { InputPlain, Text2Xl } from "../../components/commons";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ErrorMessage,
+  InputPlain,
+  SpinnerSmall,
+  SuccessMessage,
+  Text2Xl,
+} from "../../components/commons";
 import { RoutePaths } from "../../config/routes";
+import { signup } from "../../functions/auth";
 import { RegisterFormSchema } from "../../yupSchemas";
 
 const Signup = () => {
   document.title = "Chatty - Signup";
+
+  const navigate = useNavigate();
+
+  /**
+   * State to show loading
+   */
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     username: "",
@@ -22,8 +36,28 @@ const Signup = () => {
    *
    * Call The API To Register User
    */
-  const onSubmit = () => {
-    alert("Register Form Submit");
+  const onSubmit = async (values) => {
+    /**
+     * Start Loading
+     */
+    setIsLoading(true);
+    const response = await signup(values);
+
+    /**
+     * If There Is Any Error Show Error In Toast
+     *
+     * Stops Loading
+     *
+     * return the code
+     */
+    if (response.error) {
+      ErrorMessage(response.msg);
+      setIsLoading(false);
+      return;
+    }
+
+    SuccessMessage(response.msg);
+    navigate(RoutePaths.login);
   };
 
   const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
@@ -103,9 +137,9 @@ const Signup = () => {
 
                 <button
                   type="submit"
-                  className="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+                  className="w-full text-white h-12 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                 >
-                  Signup
+                  {isLoading ? <SpinnerSmall /> : <span>Signup</span>}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}

@@ -8,6 +8,10 @@ body {
   overflow: hidden;
 }
 
+.poppins-i {
+  font-family: "Poppins" !important;
+}
+
 /* <--------------------Scroll Bar--------------------> */
 
 ::-webkit-scrollbar {

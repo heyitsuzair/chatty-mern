@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  PlainButton,
-  Text2Xl,
-  TextLg,
-  TextMd,
-  TextSm,
-} from "../../components/commons";
+import { PlainButton, Text2Xl } from "../../components/commons";
 import ContactItem from "./ContactItem";
 
 const Contacts = () => {

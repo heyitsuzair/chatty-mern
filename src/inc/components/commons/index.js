@@ -30,6 +30,11 @@ import TextError from "./text/Text.error";
  */
 import PlainButton from "./buttons/PlainButton";
 
+/**
+ * Cards
+ */
+import ContactItem from "./cards/ContactItem";
+
 export {
   ToggleTheme,
   ToggleOffCanvas,
@@ -47,4 +52,5 @@ export {
   Text7Xl,
   TextError,
   PlainButton,
+  ContactItem,
 };

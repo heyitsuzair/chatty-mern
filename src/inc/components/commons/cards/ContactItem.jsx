@@ -1,5 +1,5 @@
 import React from "react";
-import { TextLg, TextSm } from "../../components/commons";
+import { TextLg, TextSm } from "..";
 
 const ContactItem = ({ isActive, isSeen }) => {
   return (

@@ -35,12 +35,12 @@ const ToggleTheme = () => {
     <div onClick={() => onToggle()}>
       {mode === "dark" ? (
         <i
-          className="fa fa-sun text-2xl shadow-indigo-500 text-white fixed top-2 right-3 shadow-2xl cursor-pointer bg-gray-900 w-14 h-14 items-center justify-center flex rounded-full"
+          className="fa fa-sun text-2xl shadow-indigo-500 text-white fixed top-2 left-3 lg:left-auto lg:right-3 shadow-2xl cursor-pointer bg-gray-800 w-12 h-12 lg:w-14 lg:h-14 items-center justify-center flex rounded-full"
           aria-hidden="true"
         ></i>
       ) : (
         <i
-          className="fa fa-moon text-2xl shadow-indigo-500 text-gray-900 fixed top-2 right-3 shadow-2xl cursor-pointer bg-white w-14 h-14 items-center justify-center flex rounded-full"
+          className="fa fa-moon text-2xl shadow-indigo-500 text-gray-900 fixed top-2 left-3 lg:left-auto lg:right-3 shadow-2xl cursor-pointer bg-white w-12 h-12 lg:w-14 lg:h-14 items-center justify-center flex rounded-full"
           aria-hidden="true"
         ></i>
       )}

@@ -2,11 +2,13 @@
  * Togglers
  */
 import ToggleTheme from "./toggle/Toggle.theme";
+import ToggleOffCanvas from "./toggle/Toggle.offcanvas";
 
 /**
  * Inputs
  */
 import InputPlain from "./inputs/Input.plain";
+import InputIconned from "./inputs/Input.iconned";
 
 /**
  * Texts
@@ -30,7 +32,9 @@ import PlainButton from "./buttons/PlainButton";
 
 export {
   ToggleTheme,
+  ToggleOffCanvas,
   InputPlain,
+  InputIconned,
   TextSm,
   TextMd,
   TextLg,

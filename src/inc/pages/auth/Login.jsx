@@ -7,7 +7,6 @@ import {
   ErrorMessage,
   InputPlain,
   SpinnerSmall,
-  SuccessMessage,
   Text2Xl,
 } from "../../components/commons";
 import { RoutePaths } from "../../config/routes";

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { InputIconned, Text2Xl, TextSm } from "../../components/commons";
+import { Date, InputIconned, Text2Xl, TextSm } from "../../components/commons";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-const ChatBox = () => {
+const ChatBox = ({ contact, messages }) => {
   const [inputMessage, setInputMessage] = useState("");
 
   /**
@@ -30,15 +30,22 @@ const ChatBox = () => {
     icon: "fa fa-paper-plane",
   };
 
+  const LAST_ACTIVE =
+    contact?.friend_id.last_active === "Online" ? (
+      "Online"
+    ) : (
+      <Date text="Active" date={contact.friend_id.last_active} />
+    );
+
   return (
     <div>
       <header className="p-4 border-b border-indigo-500">
         <Text2Xl
-          text="Muhammad Uzair"
+          text={contact?.friend_id.username}
           classes="leading-tight text-center tracking-tight font-semibold !text-gray-900 dark:!text-white"
         />
         <TextSm
-          text="Active 6:21 PM, Sun, Oct 17, 2021"
+          text={LAST_ACTIVE}
           classes={`leading-tight tracking-tight font-medium !text-black dark:!text-gray-500 mt-2 text-center`}
         />
       </header>

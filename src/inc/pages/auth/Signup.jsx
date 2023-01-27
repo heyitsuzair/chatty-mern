@@ -127,7 +127,7 @@ const Signup = () => {
     /**
      * Protected Route
      */
-    if (user) {
+    if (user || localStorage.getItem("chatty-user")) {
       navigate(RoutePaths.index);
     }
     //eslint-disable-next-line

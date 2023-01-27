@@ -38,7 +38,9 @@ const ContactsState = ({ children }) => {
   };
 
   return (
-    <contactContext.Provider value={{ contacts, fetchContacts, createContact }}>
+    <contactContext.Provider
+      value={{ setContacts, contacts, fetchContacts, createContact }}
+    >
       {children}
     </contactContext.Provider>
   );

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PlainButton, SpinnerLarge } from "../../components/commons";
+import { PlainButton, SpinnerLarge, TextMd } from "../../components/commons";
 import { socket } from "../../config";
 import { RoutePaths } from "../../config/routes";
 import { authContext } from "../../context/auth";
@@ -11,9 +11,19 @@ import Contacts from "./Contacts";
 const Home = () => {
   document.title = "Chatty";
 
-  const { user } = useContext(authContext);
+  const { user, setUser } = useContext(authContext);
 
-  const { fetchContacts } = useContext(contactContext);
+  /**
+   * State To Store Contact ID When Selected
+   */
+  const [selectedContact, setSelectedContact] = useState(null);
+
+  /**
+   * State For Active Chat
+   */
+  const [chat, setChat] = useState(null);
+
+  const { fetchContacts, contacts, setContacts } = useContext(contactContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,6 +31,22 @@ const Home = () => {
    * RRD Helpers
    */
   const navigate = useNavigate();
+
+  /**
+   * @function onClickContact
+   *
+   * Triggers When Someone Clicks On Contact
+   */
+  const onClickContact = (contact_id) => {
+    /**
+     * Find Contact By Its ID
+     */
+    const contact = contacts.find(
+      (contact) => contact.contact._id === contact_id
+    );
+    setChat(contact);
+    setSelectedContact(contact_id);
+  };
 
   /**
    * Socket Io Configuration
@@ -31,10 +57,42 @@ const Home = () => {
       socket.emit("onLogin", user);
 
       socket.on("userConnected", (user_id) => {
-        console.log("Logged In: " + user_id);
+        if (user_id !== undefined) {
+          /**
+           * Check Whether User Which Is Connected Is In Contacts Array
+           *
+           * @true Make Contact Online In Real Time
+           */
+          const contact = contacts.find((contact) => {
+            return contact.contact.friend_id._id === user_id;
+          });
+          const index = contacts.findIndex(
+            (contact) => contact.contact.friend_id._id === user_id
+          );
+          if (contact) {
+            contacts[index].contact.friend_id.last_active = "Online";
+            setContacts(contacts);
+          }
+        }
       });
       socket.on("userDisConnected", (user_id) => {
-        console.log("Logged Out: " + user_id);
+        if (user_id !== undefined) {
+          /**
+           * Check Whether User Which Is DisConnected Is In Contacts Array
+           *
+           * @true Make Contact Offline In Real Time
+           */
+          const contact = contacts.find((contact) => {
+            return contact.contact.friend_id._id === user_id;
+          });
+          const index = contacts.findIndex(
+            (contact) => contact.contact.friend_id._id === user_id
+          );
+          if (contact) {
+            contacts[index].contact.friend_id.last_active = new Date();
+            setContacts(contacts);
+          }
+        }
       });
     }
   };
@@ -48,7 +106,7 @@ const Home = () => {
     const user = localStorage.getItem("chatty-user");
     socket.emit("onLogout", user);
     localStorage.removeItem("chatty-user");
-
+    setUser(null);
     navigate(RoutePaths.login);
   };
 
@@ -56,14 +114,30 @@ const Home = () => {
     /**
      * Protected Route
      */
-    if (!user) {
+    if (!user || !localStorage.getItem("chatty-user")) {
       navigate(RoutePaths.login);
       return;
     }
     callSocket();
     fetchContacts(setIsLoading);
     //eslint-disable-next-line
-  }, []);
+  }, [contacts]);
+
+  /**
+   * Chatbox Props
+   */
+  const chatboxProps = {
+    ...chat,
+    selectedContact,
+  };
+  /**
+   * Contacts Props
+   */
+  const contactsProps = {
+    selectedContact,
+    setSelectedContact,
+    onClickContact,
+  };
 
   return (
     <>
@@ -84,10 +158,19 @@ const Home = () => {
           <div className="bg-white rounded-xl shadow-md dark:border h-[94vh] dark:bg-gray-800 dark:border-gray-700">
             <div className="grid grid-cols-12">
               <div className="col-span-12 lg:col-span-4 border-r border-indigo-500">
-                <Contacts />
+                <Contacts {...contactsProps} />
               </div>
               <div className="col-span-12 lg:col-span-8">
-                <ChatBox />
+                {selectedContact ? (
+                  <ChatBox {...chatboxProps} />
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <TextMd
+                      text="Select A Conversation To Get Started"
+                      classes="!text-black dark:!text-white"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

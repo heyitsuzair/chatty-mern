@@ -8,7 +8,7 @@ import {
 import { contactContext } from "../../context/contact";
 import AddContact from "./AddContact";
 
-const Contacts = () => {
+const Contacts = ({ selectedContact, onClickContact }) => {
   /**
    * Context
    */
@@ -41,7 +41,12 @@ const Contacts = () => {
         {contacts.length > 0 ? (
           contacts.map((contact) => {
             return (
-              <ContactItem isActive {...contact} key={contact.contact._id} />
+              <ContactItem
+                isActive={contact.contact._id === selectedContact}
+                onClickContact={onClickContact}
+                {...contact}
+                key={contact.contact._id}
+              />
             );
           })
         ) : (

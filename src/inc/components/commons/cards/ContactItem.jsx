@@ -1,9 +1,10 @@
 import React from "react";
 import { TextLg, TextSm } from "..";
 
-const ContactItem = ({ isActive, messages, contact }) => {
+const ContactItem = ({ isActive, messages, contact, onClickContact }) => {
   return (
     <div
+      onClick={() => onClickContact(contact?._id)}
       className={`contact-item ${
         isActive
           ? "dark:bg-indigo-800 bg-indigo-500"

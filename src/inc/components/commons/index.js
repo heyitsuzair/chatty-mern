@@ -49,6 +49,11 @@ import SpinnerSmall from "./spinners/SpinnerSmall";
 import SpinnerLarge from "./spinners/SpinnerLarge";
 import SpinnerMedium from "./spinners/SpinnerMedium";
 
+/**
+ * Moment
+ */
+import Date from "./moment/Date";
+
 export {
   ToggleTheme,
   ToggleOffCanvas,
@@ -73,4 +78,5 @@ export {
   SpinnerSmall,
   SpinnerLarge,
   SpinnerMedium,
+  Date,
 };

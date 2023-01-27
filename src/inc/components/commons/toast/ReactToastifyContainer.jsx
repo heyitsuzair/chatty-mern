@@ -8,7 +8,7 @@ const ReactToastifyContainer = () => {
       position="top-center"
       pauseOnHover={true}
       draggable={true}
-      toastClassName="poppins-i !font-medium bg-white dark:bg-gray-900 !text-black dark:!text-white text-md"
+      toastClassName="poppins-i sm:!w-[25rem] sm:mx-auto sm:right-11 !font-medium bg-white dark:bg-gray-800 !text-black dark:!text-white text-md"
     />
   );
 };

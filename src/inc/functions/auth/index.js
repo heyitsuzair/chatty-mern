@@ -9,3 +9,11 @@ export const signup = async (postData) => {
     return response.data;
   }
 };
+export const login = async (postData) => {
+  try {
+    const { data } = await axios.post(Endpoints.login, postData);
+    return data;
+  } catch ({ response }) {
+    return response.data;
+  }
+};

@@ -1,12 +1,31 @@
 import { useFormik } from "formik";
 import React from "react";
-import { Link } from "react-router-dom";
-import { InputPlain, Text2Xl } from "../../components/commons";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ErrorMessage,
+  InputPlain,
+  SpinnerSmall,
+  SuccessMessage,
+  Text2Xl,
+} from "../../components/commons";
 import { RoutePaths } from "../../config/routes";
+import { login } from "../../functions/auth";
 import { LoginFormSchema } from "../../yupSchemas";
 
 const Login = () => {
   document.title = "Chatty - Login";
+
+  /**
+   * State For Loading
+   */
+  const [isLoading, setIsLoading] = useState(false);
+
+  /**
+   * RRD Helpers
+   */
+  const navigate = useNavigate();
 
   const initialValues = {
     username: "",
@@ -20,8 +39,28 @@ const Login = () => {
    *
    * Call The API To Login User
    */
-  const onSubmit = () => {
-    alert("Login Form Submit");
+  const onSubmit = async (values) => {
+    /**
+     * Start Loading
+     */
+    setIsLoading(true);
+    const response = await login(values);
+
+    /**
+     * If There Is Any Error Show Error In Toast
+     *
+     * Stops Loading
+     *
+     * return the code
+     */
+    if (response.error) {
+      ErrorMessage(response.msg);
+      setIsLoading(false);
+      return;
+    }
+
+    localStorage.setItem("chatty-user", response.token);
+    navigate(RoutePaths.index);
   };
 
   const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
@@ -60,6 +99,17 @@ const Login = () => {
     },
   ];
 
+  useEffect(() => {
+    const user = localStorage.getItem("chatty-user");
+    /**
+     * Protected Route
+     */
+    if (user) {
+      navigate(RoutePaths.index);
+    }
+    //eslint-disable-next-line
+  }, []);
+
   return (
     <div>
       <section>
@@ -77,9 +127,9 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+                  className="w-full text-white h-12 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                 >
-                  Login
+                  {isLoading ? <SpinnerSmall /> : <span>Login</span>}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don't Have An Account?{" "}

@@ -3,4 +3,7 @@ export const Endpoints = {
   // Auth
   signup: BASE_URL + "auth/signup",
   login: BASE_URL + "auth/login",
+
+  // Contacts
+  addContact: BASE_URL + "contact/add-contact",
 };

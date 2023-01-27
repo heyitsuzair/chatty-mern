@@ -24,7 +24,7 @@ const Home = () => {
   /**
    * @function onLogout
    *
-   * Triggers When Someone Logsout
+   * Triggers When Someone Logs out
    */
   const onLogout = () => {
     const user = localStorage.getItem("chatty-user");

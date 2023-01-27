@@ -6,4 +6,5 @@ export const Endpoints = {
 
   // Contacts
   addContact: BASE_URL + "contact/add-contact",
+  getContacts: BASE_URL + "contact/get-contacts",
 };

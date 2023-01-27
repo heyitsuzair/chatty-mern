@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,11 +10,14 @@ import {
   Text2Xl,
 } from "../../components/commons";
 import { RoutePaths } from "../../config/routes";
+import { authContext } from "../../context/auth";
 import { login } from "../../functions/auth";
 import { LoginFormSchema } from "../../yupSchemas";
 
 const Login = () => {
   document.title = "Chatty - Login";
+
+  const { setUser, user } = useContext(authContext);
 
   /**
    * State For Loading
@@ -60,6 +63,7 @@ const Login = () => {
 
     localStorage.setItem("chatty-user", response.token);
     navigate(RoutePaths.index);
+    setUser(response.token);
   };
 
   const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
@@ -99,7 +103,6 @@ const Login = () => {
   ];
 
   useEffect(() => {
-    const user = localStorage.getItem("chatty-user");
     /**
      * Protected Route
      */

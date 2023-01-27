@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ErrorMessage,
   InputPlain,
@@ -6,9 +6,11 @@ import {
   SuccessMessage,
   TextXl,
 } from "../../components/commons";
-import { addContact } from "../../functions/contact";
+import { contactContext } from "../../context/contact";
 
 const AddContact = ({ isModalOpen, setIsModalOpen }) => {
+  const { createContact } = useContext(contactContext);
+
   /**
    * State For Loading
    */
@@ -60,7 +62,7 @@ const AddContact = ({ isModalOpen, setIsModalOpen }) => {
       username,
     };
 
-    const response = await addContact(data);
+    const response = await createContact(data);
 
     /**
      * If There Is Any Error Show Error In Toast
@@ -78,6 +80,8 @@ const AddContact = ({ isModalOpen, setIsModalOpen }) => {
     SuccessMessage(response.msg);
     setIsLoading(false);
     setIsModalOpen(false);
+    setUsername("");
+    setUsernameTouched(false);
   };
 
   return (

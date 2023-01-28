@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Date, InputIconned, Text2Xl, TextSm } from "../../components/commons";
 import ScrollToBottom from "react-scroll-to-bottom";
+import { socket } from "../../config";
+import { authContext } from "../../context/auth";
+import { contactContext } from "../../context/contact";
 
-const ChatBox = ({ contact, messages }) => {
+const ChatBox = ({ friend_id, messages, selectedContact }) => {
   const [inputMessage, setInputMessage] = useState("");
+
+  const { user } = useContext(authContext);
+
+  const { contacts, setContacts } = useContext(contactContext);
 
   /**
    * @function onMessageSubmit
@@ -14,7 +21,65 @@ const ChatBox = ({ contact, messages }) => {
    */
   const onMessageSubmit = (e) => {
     e.preventDefault();
-    alert("msg Added");
+    if (inputMessage === "") {
+      return;
+    }
+    const socketData = {
+      message_id: messages._id,
+      update: {
+        receiver_id: friend_id._id,
+        sender_id: user,
+        message: inputMessage,
+      },
+    };
+    /**
+     * Emit A Socket
+     */
+    socket.emit("sendMessage", socketData);
+  };
+
+  const callSocket = () => {
+    /**
+     * When Someone Opens Chatbox
+     */
+    const readConversationData = {
+      message_id: messages._id,
+      update: {
+        receiver_id: user,
+        sender_id: friend_id._id,
+      },
+    };
+    socket.emit("readingConversation", readConversationData);
+
+    socket.on("messageReceived", (message) => {
+      /**
+       * Fetch All Messages
+       */
+      const contact = contacts.find(
+        (contact) => contact._id === selectedContact
+      );
+      const index = contacts.findIndex(
+        (contact) => contact.friend_id._id === selectedContact
+      );
+      if (contact) {
+        contacts[index].messages = message;
+        setContacts(contacts);
+      }
+    });
+  };
+
+  const onFocusInput = () => {
+    /**
+     * When Someone Focus Chat
+     */
+    const readConversationData = {
+      message_id: messages._id,
+      update: {
+        receiver_id: user,
+        sender_id: friend_id._id,
+      },
+    };
+    socket.emit("readingConversation", readConversationData);
   };
 
   /**
@@ -26,22 +91,30 @@ const ChatBox = ({ contact, messages }) => {
       name: "message",
       value: inputMessage,
       onChange: (e) => setInputMessage(e.target.value),
+      onFocus: () => onFocusInput(),
     },
     icon: "fa fa-paper-plane",
   };
-
   const LAST_ACTIVE =
-    contact?.friend_id.last_active === "Online" ? (
+    friend_id.last_active === "Online" ? (
       "Online"
     ) : (
-      <Date text="Active" date={contact.friend_id.last_active} />
+      <Date text="Active" date={friend_id.last_active} />
     );
+
+  useEffect(() => {
+    /**
+     * Make All Messages Seen
+     */
+    callSocket();
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <div>
       <header className="p-4 border-b border-indigo-500">
         <Text2Xl
-          text={contact?.friend_id.username}
+          text={friend_id?.username}
           classes="leading-tight text-center tracking-tight font-semibold !text-gray-900 dark:!text-white"
         />
         <TextSm

@@ -41,9 +41,7 @@ const Home = () => {
     /**
      * Find Contact By Its ID
      */
-    const contact = contacts.find(
-      (contact) => contact.contact._id === contact_id
-    );
+    const contact = contacts.find((contact) => contact._id === contact_id);
     setChat(contact);
     setSelectedContact(contact_id);
   };
@@ -52,7 +50,6 @@ const Home = () => {
    * Socket Io Configuration
    */
   const callSocket = () => {
-    const user = localStorage.getItem("chatty-user");
     if (user) {
       socket.emit("onLogin", user);
 
@@ -64,13 +61,13 @@ const Home = () => {
            * @true Make Contact Online In Real Time
            */
           const contact = contacts.find((contact) => {
-            return contact.contact.friend_id._id === user_id;
+            return contact.friend_id._id === user_id;
           });
           const index = contacts.findIndex(
-            (contact) => contact.contact.friend_id._id === user_id
+            (contact) => contact.friend_id._id === user_id
           );
           if (contact) {
-            contacts[index].contact.friend_id.last_active = "Online";
+            contacts[index].friend_id.last_active = "Online";
             setContacts(contacts);
           }
         }
@@ -83,13 +80,13 @@ const Home = () => {
            * @true Make Contact Offline In Real Time
            */
           const contact = contacts.find((contact) => {
-            return contact.contact.friend_id._id === user_id;
+            return contact.friend_id._id === user_id;
           });
           const index = contacts.findIndex(
-            (contact) => contact.contact.friend_id._id === user_id
+            (contact) => contact.friend_id._id === user_id
           );
           if (contact) {
-            contacts[index].contact.friend_id.last_active = new Date();
+            contacts[index].friend_id.last_active = new Date();
             setContacts(contacts);
           }
         }

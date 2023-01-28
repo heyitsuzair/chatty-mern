@@ -42,10 +42,10 @@ const Contacts = ({ selectedContact, onClickContact }) => {
           contacts.map((contact) => {
             return (
               <ContactItem
-                isActive={contact.contact._id === selectedContact}
+                isActive={contact._id === selectedContact}
                 onClickContact={onClickContact}
                 {...contact}
-                key={contact.contact._id}
+                key={contact._id}
               />
             );
           })

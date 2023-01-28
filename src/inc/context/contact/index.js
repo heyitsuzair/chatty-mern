@@ -25,7 +25,7 @@ const ContactsState = ({ children }) => {
   const fetchContacts = async (setIsLoading) => {
     const response = await getContacts(user);
     setContacts(response);
-    setIsLoading(false);
+    setIsLoading && setIsLoading(false);
   };
   /**
    * Triggers When Someone Submits Form
@@ -39,7 +39,12 @@ const ContactsState = ({ children }) => {
 
   return (
     <contactContext.Provider
-      value={{ setContacts, contacts, fetchContacts, createContact }}
+      value={{
+        setContacts,
+        contacts,
+        fetchContacts,
+        createContact,
+      }}
     >
       {children}
     </contactContext.Provider>

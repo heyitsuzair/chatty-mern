@@ -4,11 +4,15 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { socket } from "../../config";
 import { authContext } from "../../context/auth";
 import { contactContext } from "../../context/contact";
+import jwt_decode from "jwt-decode";
 
 const ChatBox = ({ friend_id, messages, selectedContact }) => {
   const [inputMessage, setInputMessage] = useState("");
 
   const { user } = useContext(authContext);
+  const logged_in_user = localStorage.getItem("chatty-user")
+    ? jwt_decode(localStorage.getItem("chatty-user"))
+    : "";
 
   const { contacts, setContacts } = useContext(contactContext);
 
@@ -52,19 +56,24 @@ const ChatBox = ({ friend_id, messages, selectedContact }) => {
     socket.emit("readingConversation", readConversationData);
 
     socket.on("messageReceived", (message) => {
+      setInputMessage("");
       /**
-       * Fetch All Messages
+       * Find Message Against ID
        */
-      const contact = contacts.find(
-        (contact) => contact._id === selectedContact
+      const find_messages = contacts.find(
+        (contact) => contact.messages._id === message._id
       );
-      const index = contacts.findIndex(
-        (contact) => contact.friend_id._id === selectedContact
+      /**
+       * Update Messages
+       */
+      find_messages.messages.messages = message.messages;
+      /**
+       * Remove This Message And Add Again
+       */
+      const filtered = contacts.filter(
+        (contact) => contact.messages._id !== message._id
       );
-      if (contact) {
-        contacts[index].messages = message;
-        setContacts(contacts);
-      }
+      setContacts([find_messages, ...filtered]);
     });
   };
 
@@ -126,132 +135,27 @@ const ChatBox = ({ friend_id, messages, selectedContact }) => {
         className="chats h-[86.5vh] md:h-[85vh] lg:h-[69vh] overflow-x-hidden"
         followButtonClassName="hidden"
       >
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-start">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
-          />
-        </div>
-        <div className="flex items-start justify-end">
-          <TextSm
-            text="Hey. How Are You Doing. I am Good"
-            classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
-          />
-        </div>
+        {messages?.messages.map((message) => {
+          return (
+            <div key={message._id}>
+              {message.sender_id === logged_in_user.user_id ? (
+                <div className="flex items-start justify-end">
+                  <TextSm
+                    text={message.message}
+                    classes="leading-tight text-right w-auto m-2 rounded-full p-2.5 lg:p-5 bg-indigo-600 tracking-tight font-semibold"
+                  />
+                </div>
+              ) : (
+                <div className="flex items-start justify-start">
+                  <TextSm
+                    text={message.message}
+                    classes="leading-tight text-left w-auto m-2 rounded-full p-2.5 lg:p-5 bg-gray-500 dark:bg-gray-700 tracking-tight font-semibold"
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </ScrollToBottom>
       <div className="send-message-box">
         <form onSubmit={onMessageSubmit}>

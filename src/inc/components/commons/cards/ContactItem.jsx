@@ -11,7 +11,10 @@ const ContactItem = ({
   onClickContact,
 }) => {
   const { user } = useContext(authContext);
-  const logged_in_user = jwt_decode(localStorage.getItem("chatty-user"));
+  const logged_in_user = localStorage.getItem("chatty-user")
+    ? jwt_decode(localStorage.getItem("chatty-user"))
+    : "";
+
   return (
     <div
       onClick={() => onClickContact(_id)}

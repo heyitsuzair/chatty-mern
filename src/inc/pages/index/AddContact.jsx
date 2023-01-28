@@ -9,7 +9,7 @@ import {
 import { contactContext } from "../../context/contact";
 
 const AddContact = ({ isModalOpen, setIsModalOpen }) => {
-  const { createContact } = useContext(contactContext);
+  const { createContact, setContacts, contacts } = useContext(contactContext);
 
   /**
    * State For Loading
@@ -82,6 +82,8 @@ const AddContact = ({ isModalOpen, setIsModalOpen }) => {
     setIsModalOpen(false);
     setUsername("");
     setUsernameTouched(false);
+    console.log(response);
+    setContacts([...contacts, response.contact]);
   };
 
   return (
